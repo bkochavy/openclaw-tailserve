@@ -1,0 +1,238 @@
+# Ralphy Progress Log
+
+- [✓] 2026-02-16 04:39 - `ts share ./file.html` outputs a single HTTPS URL to stdout and exits 0
+- [✓] 2026-02-16 04:43 - Visiting the URL serves the file with correct Content-Type (mime-types lookup)
+- [✗] 2026-02-16 19:56 - Binary files (images, PDFs) served correctly
+- [✗] 2026-02-16 19:56 - URL format: `https://<ts-hostname>:<port>/s/<id>` where id is nanoid(8)
+- [✗] 2026-02-16 19:56 - Share info persisted to `~/.tailserve/state.json`
+- [✗] 2026-02-16 19:56 - `npm test` passes
+- [✗] 2026-02-16 19:56 - `npm run typecheck` passes
+- [✗] 2026-02-16 19:56 - `ts share ./my-dir/` serves a clean directory listing at the share URL
+- [✗] 2026-02-16 19:56 - Clicking files serves them; subdirectories are navigable
+- [✗] 2026-02-16 19:56 - Minimal clean styling on directory listing (not raw HTML)
+- [✗] 2026-02-16 19:56 - Hidden files (dotfiles) excluded by default
+- [✗] 2026-02-16 19:56 - `npm test` passes
+- [✗] 2026-02-16 19:56 - `npm run typecheck` passes
+- [✗] 2026-02-16 19:56 - `ts edit ./config.json` outputs an HTTPS URL to stdout
+- [✗] 2026-02-16 19:56 - URL opens the existing md-editor app with the target file loaded (not hardcoded todos.md)
+- [✗] 2026-02-16 19:56 - The md-editor server is started automatically if not running
+- [✗] 2026-02-16 19:56 - Saving in the editor writes back to the original file on disk
+- [✗] 2026-02-16 19:56 - `ts edit --readonly ./file.json` opens in read-only mode
+- [✗] 2026-02-16 19:56 - `ts list` outputs a table: ID, Type (file/dir/edit/proxy), Path, URL, Status, Expires
+- [✗] 2026-02-16 19:56 - `ts list --json` outputs JSON array
+- [✗] 2026-02-16 19:56 - Expired shares not shown
+- [✗] 2026-02-16 19:56 - Projects included with name instead of ID
+- [✗] 2026-02-16 19:56 - `npm run typecheck` passes
+- [✗] 2026-02-16 19:56 - `ts stop <id>` removes the share, returns exit 0
+- [✗] 2026-02-16 19:56 - `ts stop --all` removes all ephemeral shares (not projects)
+- [✗] 2026-02-16 19:56 - Stopped shares return 404 immediately
+- [✗] 2026-02-16 19:56 - `npm test` passes
+- [✗] 2026-02-16 19:56 - Default TTL: 24 hours
+- [✗] 2026-02-16 19:56 - Override: `ts share --ttl 1h ./file.html`
+- [✗] 2026-02-16 19:56 - Persist: `ts share --persist ./file.html` (no expiry)
+- [✗] 2026-02-16 19:56 - TTL formats supported: `30m`, `2h`, `1d`, `7d`
+- [✗] 2026-02-16 19:56 - Reaper runs every 60s in the server process, removes expired shares
+- [✗] 2026-02-16 19:56 - On startup: sweep state.json, remove shares whose TTL expired while server was down
+- [✗] 2026-02-16 19:56 - `npm test` passes
+- [✗] 2026-02-16 19:56 - On first share, run `tailscale serve --bg --https=<port> http://localhost:<internal-port>`
+- [✗] 2026-02-16 19:56 - On `ts stop --all` or server shutdown, run `tailscale serve --https=<port> off`
+- [✗] 2026-02-16 19:56 - Detect TS hostname via `tailscale status --json` → `.Self.DNSName`
+- [✗] 2026-02-16 19:56 - Output full HTTPS URL in share commands
+- [✗] 2026-02-16 19:56 - If tailscale not available, fall back to `http://localhost:<port>` with stderr warning
+- [✗] 2026-02-16 19:56 - **Startup cleanup:** parse `tailscale serve status`, remove any routes pointing to ports with no live process (`lsof -ti :<port>`)
+- [✗] 2026-02-16 19:56 - `npm test` passes
+- [✗] 2026-02-16 19:56 - `ts share` auto-starts the server if not running (spawn + detach)
+- [✗] 2026-02-16 19:56 - Server listens on a single configurable port (default 7899)
+- [✗] 2026-02-16 19:56 - `ts server stop` gracefully shuts down and removes tailscale serve route
+- [✗] 2026-02-16 19:56 - `ts server status` shows: running/stopped, port, active shares, active projects, uptime
+- [✗] 2026-02-16 19:56 - PID file at `~/.tailserve/server.pid`
+- [✗] 2026-02-16 19:56 - On startup: restore persisted shares and projects (re-register routes, skip expired)
+- [✗] 2026-02-16 19:56 - `npm test` passes
+- [✗] 2026-02-16 19:56 - `ts project ./projects/reelfit --port 8794 --name reelfit` registers a named project
+- [✗] 2026-02-16 19:56 - Project gets URL: `https://<ts-hostname>:<port>/p/reelfit`
+- [✗] 2026-02-16 19:56 - Project config persisted to state.json under `projects` key
+- [✗] 2026-02-16 19:56 - Projects are always persistent (no TTL) — removed only by `ts project rm <name>`
+- [✗] 2026-02-16 19:56 - If `--port` provided, TailServe proxies to that port. If not, serves directory statically.
+- [✗] 2026-02-16 19:56 - `npm test` passes
+- [✗] 2026-02-16 19:56 - `npm run typecheck` passes
+- [✗] 2026-02-16 19:56 - `ts project list` shows table: name, path, port, URL, status (online/offline), startCmd
+- [✗] 2026-02-16 19:56 - `ts project list --json` outputs JSON array
+- [✗] 2026-02-16 19:56 - `ts project rm <name>` removes the project and its route from state
+- [✗] 2026-02-16 19:56 - `--start <cmd>` flag on `ts project` saves a start command (e.g. `--start "npm run dev"`) for boot recovery
+- [✗] 2026-02-16 19:56 - `npm test` passes
+- [✗] 2026-02-16 19:56 - `ts proxy 8794` creates a reverse proxy share to `localhost:8794`, returns HTTPS URL
+- [✗] 2026-02-16 19:56 - `ts proxy 8794 --name reelfit` combines with project mode (named + proxy)
+- [✗] 2026-02-16 19:56 - Health check every 10s: TCP connect to backend port, update `lastSeen` in state
+- [✗] 2026-02-16 19:56 - If backend is down: serve HTML "offline" page with project name, port, last-seen time, and auto-refresh (retries every 5s)
+- [✗] 2026-02-16 19:56 - If backend comes back: automatically resume proxying (no manual intervention)
+- [✗] 2026-02-16 19:56 - WebSocket connections proxied (for HMR/live reload)
+- [✗] 2026-02-16 19:56 - `npm test` passes
+- [✗] 2026-02-16 19:56 - On startup, read state.json and restore all `persist` shares and projects
+- [✗] 2026-02-16 19:56 - Static file/dir shares: re-register route immediately
+- [✗] 2026-02-16 19:56 - Proxy shares: re-register route; if backend dead, serve "offline" page; auto-recover when alive
+- [✗] 2026-02-16 19:56 - Projects with `--start` + `autoRestart: true`: attempt to start the backend process
+- [✗] 2026-02-16 19:56 - Expired TTL shares purged, not restored
+- [✗] 2026-02-16 19:56 - Log restoration summary: "Restored 3 projects, 2 shares. 1 project offline."
+- [✗] 2026-02-16 19:56 - `npm test` passes
+- [✗] 2026-02-16 19:56 - `ts server install` creates `~/Library/LaunchAgents/dev.tailserve.plist` with KeepAlive
+- [✗] 2026-02-16 19:56 - `ts server uninstall` removes the plist and unloads it
+- [✗] 2026-02-16 19:56 - After install + reboot, TailServe auto-starts and restores shares/projects
+- [✗] 2026-02-16 19:56 - `npm test` passes
+- [✗] 2026-02-16 19:56 - `GET /` on the TailServe server serves an HTML dashboard
+- [✗] 2026-02-16 19:56 - Shows all shares (ephemeral + persistent) and all projects
+- [✗] 2026-02-16 19:56 - Each entry: name/ID, type, path, URL (clickable), status indicator (🟢/🔴/⏳), TTL/expires, last health check
+- [✗] 2026-02-16 19:56 - Auto-refreshes every 10s (polling `/api/health`)
+- [✗] 2026-02-16 19:56 - Clean dark theme matching md-editor aesthetic
+- [✗] 2026-02-16 19:56 - `ts status` in CLI opens this URL in default browser (or prints it if `--json`)
+- [✗] 2026-02-16 19:56 - `npm run typecheck` passes
+- [✓] 2026-02-16 20:00 - `ts share ./file.html` outputs a single HTTPS URL to stdout and exits 0
+- [✓] 2026-02-16 20:02 - Visiting the URL serves the file with correct Content-Type (mime-types lookup)
+- [✓] 2026-02-16 20:05 - Binary files (images, PDFs) served correctly
+- [✓] 2026-02-16 20:07 - URL format: `https://<ts-hostname>:<port>/s/<id>` where id is nanoid(8)
+- [✓] 2026-02-16 12:10 - Share info is persisted in `~/.tailserve/state.json` and covered by a dedicated test asserting id-keyed metadata, absolute path, and 24h TTL window
+- [learn] Persistence contract: use the URL id as the `shares` key and validate timestamp fields via parse + bounded TTL rather than exact equality to avoid flaky tests
+- [✓] 2026-02-16 20:11 - Share info persisted to `~/.tailserve/state.json`
+- [✓] 2026-02-16 20:13 - `npm test` passes
+- [✓] 2026-02-16 20:15 - `npm run typecheck` passes
+- [✓] 2026-02-16 20:18 - `ts share ./my-dir/` serves a clean directory listing at the share URL
+- [✓] 2026-02-16 20:22 - Clicking files serves them; subdirectories are navigable
+- [✓] 2026-02-16 20:24 - Minimal clean styling on directory listing (not raw HTML)
+- [✓] 2026-02-16 20:27 - Hidden files (dotfiles) excluded by default
+- [✓] 2026-02-16 20:29 - `npm test` passes
+- [✓] 2026-02-16 20:31 - `npm run typecheck` passes
+- [✓] 2026-02-16 20:34 - `ts edit ./config.json` outputs an HTTPS URL to stdout
+- [✓] 2026-02-16 20:38 - URL opens the existing md-editor app with the target file loaded (not hardcoded todos.md)
+- [✓] 2026-02-16 20:43 - The md-editor server is started automatically if not running
+- [✓] 2026-02-16 20:49 - Saving in the editor writes back to the original file on disk
+- [✓] 2026-02-16 20:52 - `ts edit --readonly ./file.json` opens in read-only mode
+- [✓] 2026-02-16 20:55 - `ts list` outputs a table: ID, Type (file/dir/edit/proxy), Path, URL, Status, Expires
+- [✓] 2026-02-16 20:58 - `ts list --json` outputs JSON array
+- [✓] 2026-02-16 21:00 - Expired shares not shown
+- [✓] 2026-02-16 21:03 - Projects included with name instead of ID
+- [✓] 2026-02-16 21:05 - `npm run typecheck` passes
+- [✓] 2026-02-16 21:08 - `ts stop <id>` removes the share, returns exit 0
+- [✓] 2026-02-16 21:10 - `ts stop --all` removes all ephemeral shares (not projects)
+- [✓] 2026-02-16 21:14 - Stopped shares return 404 immediately
+- [✓] 2026-02-16 21:16 - `npm test` passes
+- [✓] 2026-02-16 21:19 - Default TTL: 24 hours
+- [✓] 2026-02-16 21:21 - Override: `ts share --ttl 1h ./file.html`
+- [✓] 2026-02-16 21:23 - Persist: `ts share --persist ./file.html` (no expiry)
+- [✓] 2026-02-16 21:25 - TTL formats supported: `30m`, `2h`, `1d`, `7d`
+- [✓] 2026-02-16 21:29 - Reaper runs every 60s in the server process, removes expired shares
+- [✓] 2026-02-16 21:31 - On startup: sweep state.json, remove shares whose TTL expired while server was down
+- [✓] 2026-02-16 21:33 - `npm test` passes
+- [✓] 2026-02-16 21:38 - On first share, run `tailscale serve --bg --https=<port> http://localhost:<internal-port>`
+- [✓] 2026-02-16 21:41 - On `ts stop --all` or server shutdown, run `tailscale serve --https=<port> off`
+- [✓] 2026-02-16 21:44 - Detect TS hostname via `tailscale status --json` → `.Self.DNSName`
+- [✓] 2026-02-16 21:49 - Output full HTTPS URL in share commands
+- [✓] 2026-02-16 21:53 - If tailscale not available, fall back to `http://localhost:<port>` with stderr warning
+- [✓] 2026-02-16 21:57 - **Startup cleanup:** parse `tailscale serve status`, remove any routes pointing to ports with no live process (`lsof -ti :<port>`)
+- [✓] 2026-02-16 22:00 - `npm test` passes
+- [✓] 2026-02-16 22:05 - `ts share` auto-starts the server if not running (spawn + detach)
+- [✓] 2026-02-16 22:10 - Server listens on a single configurable port (default 7899)
+- [✓] 2026-02-16 22:15 - `ts server stop` gracefully shuts down and removes tailscale serve route
+- [✓] 2026-02-16 22:19 - `ts server status` shows: running/stopped, port, active shares, active projects, uptime
+- [✓] 2026-02-16 22:23 - PID file at `~/.tailserve/server.pid`
+- [✓] 2026-02-16 22:27 - On startup: restore persisted shares and projects (re-register routes, skip expired)
+- [✓] 2026-02-16 22:29 - `npm test` passes
+- [✓] 2026-02-16 22:31 - `ts project ./projects/reelfit --port 8794 --name reelfit` registers a named project
+- [✓] 2026-02-16 22:34 - Project gets URL: `https://<ts-hostname>:<port>/p/reelfit`
+- [✓] 2026-02-16 22:37 - Project config persisted to state.json under `projects` key
+- [✓] 2026-02-16 22:41 - Projects are always persistent (no TTL) — removed only by `ts project rm <name>`
+- [✓] 2026-02-16 22:48 - If `--port` provided, TailServe proxies to that port. If not, serves directory statically.
+- [✓] 2026-02-16 22:49 - `npm test` passes
+- [✓] 2026-02-16 22:51 - `npm run typecheck` passes
+- [✓] 2026-02-16 22:54 - `ts project list` shows table: name, path, port, URL, status (online/offline), startCmd
+- [✓] 2026-02-16 22:58 - `ts project list --json` outputs JSON array
+- [✓] 2026-02-16 23:01 - `ts project rm <name>` removes the project and its route from state
+- [✓] 2026-02-16 23:04 - `--start <cmd>` flag on `ts project` saves a start command (e.g. `--start "npm run dev"`) for boot recovery
+- [✓] 2026-02-16 23:07 - `npm test` passes
+- [✓] 2026-02-16 23:11 - `ts proxy 8794` creates a reverse proxy share to `localhost:8794`, returns HTTPS URL
+- [✓] 2026-02-16 23:15 - `ts proxy 8794 --name reelfit` combines with project mode (named + proxy)
+- [✓] 2026-02-16 23:20 - Health check every 10s: TCP connect to backend port, update `lastSeen` in state
+- [✓] 2026-02-16 23:24 - If backend is down: serve HTML "offline" page with project name, port, last-seen time, and auto-refresh (retries every 5s)
+- [✓] 2026-02-16 23:29 - If backend comes back: automatically resume proxying (no manual intervention)
+- [✓] 2026-02-16 23:35 - WebSocket connections proxied (for HMR/live reload)
+- [✓] 2026-02-16 23:39 - `npm test` passes
+- [✓] 2026-02-16 23:43 - On startup, read state.json and restore all `persist` shares and projects
+- [✓] 2026-02-16 23:47 - Static file/dir shares: re-register route immediately
+- [✓] 2026-02-16 23:51 - Proxy shares: re-register route; if backend dead, serve "offline" page; auto-recover when alive
+- [✓] 2026-02-16 23:55 - Projects with `--start` + `autoRestart: true`: attempt to start the backend process
+- [✓] 2026-02-16 23:59 - Expired TTL shares purged, not restored
+- [✓] 2026-02-17 00:02 - Log restoration summary: "Restored 3 projects, 2 shares. 1 project offline."
+- [✓] 2026-02-17 00:03 - `npm test` passes
+- [✓] 2026-02-17 00:07 - `ts server install` creates `~/Library/LaunchAgents/dev.tailserve.plist` with KeepAlive
+- [✓] 2026-02-17 00:10 - `ts server uninstall` removes the plist and unloads it
+- [✓] 2026-02-17 00:13 - After install + reboot, TailServe auto-starts and restores shares/projects
+- [✓] 2026-02-17 00:15 - `npm test` passes
+- [✓] 2026-02-17 00:18 - `GET /` on the TailServe server serves an HTML dashboard
+- [✓] 2026-02-17 00:21 - Shows all shares (ephemeral + persistent) and all projects
+- [✓] 2026-02-17 00:24 - Each entry: name/ID, type, path, URL (clickable), status indicator (🟢/🔴/⏳), TTL/expires, last health check
+- [✓] 2026-02-17 00:26 - Auto-refreshes every 10s (polling `/api/health`)
+- [✓] 2026-02-17 00:29 - Clean dark theme matching md-editor aesthetic
+- [✓] 2026-02-17 00:33 - `ts status` in CLI opens this URL in default browser (or prints it if `--json`)
+- [✓] 2026-02-17 00:34 - `npm run typecheck` passes
+- [✓] 2026-02-17 01:08 - Route Protection — parse TAILSERVE_PROTECTED_PORTS env var (comma-separated port numbers), add protectedPorts:number[] to TailserveState in src/state.ts (default [18789]), update cleanupStaleTailscaleServeRoutes in src/tailscale.ts to skip routes whose backend port is protected or on HTTPS 443. Add test/protected-ports.test.ts. npm test && npm run typecheck.
+- [✓] 2026-02-17 01:11 - Fallback binary name — update package.json bin to {ts: ./bin/ts, tailserve: ./bin/ts}. npm run typecheck.
+- [✓] 2026-02-17 01:16 - Remove broken edit command — delete src/md-editor.ts and test/md-editor.test.ts. Remove edit command from src/cli.ts, remove createEditShare from src/shares.ts, remove toEditShareUrl from src/state.ts, remove edit from ShareType union (becomes file|dir|proxy), remove isEditShare/findEditShareByIdOrPath/saveEditShareContent/handleFileApiRequest from src/server.ts. Update affected tests. npm test && npm run typecheck.
+- [✓] 2026-02-17 01:19 - Funnel support in tailscale.ts — add runFunnelInBackground and runFunnelOff to TailscaleRuntime interface following same pattern as serve methods but using tailscale funnel. Add enableTailscaleFunnelRoute function. Dry-run safe. Add test/funnel.test.ts. npm test && npm run typecheck.
+- [✓] 2026-02-17 01:21 - Public flag on state — add optional public:boolean to ShareRecord and project records in src/state.ts. npm run typecheck.
+- [✓] 2026-02-17 01:26 - CLI ts funnel command — add funnel command to src/cli.ts taking port argument, calls ensureTailserveServerRunning then enableTailscaleFunnelRoute, creates proxy share with public:true, prints URL. Support --name for named project. Add tests. npm test && npm run typecheck.
+- [✓] 2026-02-17 01:30 - CLI --public flag on share and proxy — add --public option to share and proxy commands in src/cli.ts. When set, use enableTailscaleFunnelRoute instead of ensureTailscaleServeForFirstShare, set public:true on share. Add tests. npm test && npm run typecheck.
+- [✓] 2026-02-17 01:33 - Tunnel module — create src/tunnel.ts with TunnelRuntime interface. Implement spawnCloudflaredTunnel(port) that spawns cloudflared tunnel --url as detached child, parses trycloudflare.com URL from output (15s timeout), returns {pid,url}. Implement killTunnelProcess(pid). Throw if cloudflared not found. Add test/tunnel.test.ts with mocked spawn. npm test && npm run typecheck.
+- [✓] 2026-02-17 01:36 - Tunnel state — add tunnels:Record<string,{pid,url,port,createdAt}> to TailserveState in src/state.ts. On server close in src/server.ts kill all tunnel processes. npm run typecheck.
+- [✓] 2026-02-17 01:41 - CLI ts tunnel command — add tunnel command to src/cli.ts taking port argument, calls spawnCloudflaredTunnel, stores in state.tunnels, prints URL. Support --name. ts stop must check tunnels and kill process. Add ts stop --tunnels to kill all. Add tests. npm test && npm run typecheck.
+- [✓] 2026-02-17 01:44 - CLI --tunnel flag on share — add --tunnel option to share command in src/cli.ts. Creates share normally then spawns cloudflared tunnel to TailServe port, stores tunnel, outputs trycloudflare.com URL. Add tests. npm test && npm run typecheck.
+- [✓] 2026-02-17 01:48 - Port auto-selection — in src/server-entry.ts wrap server.listen in retry logic. On EADDRINUSE retry port+1 up to port+10, log to stderr, update state.port and state.tsPort. Add test/port-retry.test.ts. npm test && npm run typecheck.
+- [✓] 2026-02-17 01:51 - Atomic state writes — in src/state.ts writeState writes to state.json.tmp then renameSync to state.json. Add lockfile mechanism (state.json.lock, 10s stale timeout, 5 retries at 100ms). Add concurrent write tests. npm test && npm run typecheck.
+- [✓] 2026-02-17 01:56 - CLI ts cleanup command — add cleanup command to src/cli.ts, calls cleanupStaleTailscaleServeRoutes with protected ports. Return summary {removed,protected,skipped}. Print summary. Support --dry-run. Does not require server running. Add tests. npm test && npm run typecheck.
+- [✓] 2026-02-17 01:59 - Dashboard updates — update buildDashboardHtml in src/server.ts to show Access column (tailnet/public) based on public field. Show tunnel entries from state.tunnels in Tunnels section. npm test && npm run typecheck.
+- [✓] 2026-02-17 02:02 - List command updates — update list command in src/cli.ts to include Access column. Include tunnel entries with type tunnel. Update --json output. Add tests. npm test && npm run typecheck.
+- [✓] 2026-02-17 02:02 - Create ultimate-share skill directory — mkdir -p /Users/nova/.openclaw/workspace/skills/ultimate-share/scripts /Users/nova/.openclaw/workspace/skills/ultimate-share/references. Rename /Users/nova/.openclaw/workspace/skills/share to /Users/nova/.openclaw/workspace/skills/share-old.
+- [✓] 2026-02-17 02:05 - Write verify-url.sh — create /Users/nova/.openclaw/workspace/skills/ultimate-share/scripts/verify-url.sh. Takes URL as $1, curls with 10s timeout, prints pass/fail with status code, exits 0 on 200/301/302 else 1. chmod +x. Test against https://example.com.
+- [✓] 2026-02-17 02:08 - Write cleanup-shares.sh — create /Users/nova/.openclaw/workspace/skills/ultimate-share/scripts/cleanup-shares.sh. Lists TailServe shares (node bin/ts list --json), tunnel tmux sessions (grep share-), tailscale routes. Prints summary. --kill-expired flag runs ts stop --all. chmod +x.
+- [✓] 2026-02-17 02:11 - Write troubleshooting.md — create /Users/nova/.openclaw/workspace/skills/ultimate-share/references/troubleshooting.md under 150 lines covering: TIME_WAIT ports, tailscale serve holds ports, cloudflared not installed, funnel ACL, port auto-retry, protected routes, state corruption.
+- [✓] 2026-02-17 02:15 - Write ultimate-share SKILL.md — create /Users/nova/.openclaw/workspace/skills/ultimate-share/SKILL.md. Frontmatter name:ultimate-share with comprehensive description. Body under 200 lines with decision tree (tailnet→TailServe, external temp→cloudflare tunnel, external persistent→funnel, small file→telegram attachment), commands for each method using node /Users/nova/.openclaw/workspace/projects/tailserve/bin/ts, non-negotiable rules (verify URL, never share+create same message), reference to troubleshooting.md.
+- [✓] 2026-02-17 04:34 - Write tests for stale PID file handling: server.pid exists but process is dead. Verify `ts server status` reports "stopped" (not "running"). Verify `ts share` starts a new server successfully. Verify the stale PID file is cleaned up.
+- [✓] 2026-02-17 04:41 - Write tests for port-in-use scenarios: default port 7899 is occupied by another process. Verify server startup fails gracefully with a clear error message (not EADDRINUSE crash). Verify the error message tells the user what port is busy and suggests `lsof -i :PORT` or `ts server stop`.
+- [✓] 2026-02-17 04:48 - Write tests for stale tailscale serve mappings: a `tailscale serve` route exists for the port but no local server is running. Verify `ts share` can still start the server and serve content. Verify `ts server stop` cleans up stale tailscale serve routes.
+- [✓] 2026-02-17 04:54 - Write tests for state.json corruption: state file exists but contains invalid JSON, or has missing required fields, or has shares referencing ports/paths that no longer exist. Verify `readState()` falls back to defaults gracefully. Verify `ts list` doesn't crash. Verify `ts share` works by recreating valid state.
+- [✓] 2026-02-17 05:00 - Write tests for server port mismatch: state.json says port 7899 but server is actually listening on 7900 (e.g. after manual restart with different port). Verify `ts list` shows URLs with the correct port. Verify `ts server status` shows the actual port. Verify shares created after the mismatch use the correct port in their URLs.
+- [✓] 2026-02-17 05:09 - Write tests for concurrent share creation: two `ts share` commands run nearly simultaneously. Verify both shares are persisted (no state overwrite race). Verify both shares are accessible. Verify `ts list` shows both.
+- [✓] 2026-02-17 05:16 - Write tests for server restart during active shares: server has 3 active ephemeral shares, server is restarted (kill + auto-start on next share). Verify the new share works. Verify the ephemeral shares from before restart survive in state (they were recently created, not expired).
+- [✓] 2026-02-17 05:24 - Write tests for `ts stop` with already-stopped server: server is not running, user runs `ts stop <id>`. Verify the share is removed from state. Verify no crash or hang. Verify `ts stop --all` works without a running server.
+- [✓] 2026-02-17 05:26 - Write tests for double `ts server stop`: server is running, user runs `ts server stop` twice in succession. Verify first stop succeeds. Verify second stop is a no-op (no crash, no error). Verify PID file is cleaned up.
+- [✓] 2026-02-17 05:29 - Fix any bugs discovered by the above tests. Ensure all existing tests (138+) continue to pass alongside the new tests. Run the full suite: `npx vitest run`. Every test must pass.
+- [✓] 2026-02-17 06:51 - Create `createEditShare(targetPath, options?)` in `src/shares.ts` and export it. It should: resolve targetPath to absolute, verify file exists and is a regular file (throw if not), read state, call `ensureTailserveServerRunning`, setup tailscale serve route, generate nanoid, create a ShareRecord with `type: "edit"` and the `readonly` flag from options (default false), support `persist` and `ttlMs` options like other share types, write state, return `{id, url, share, warning}`. Model it closely on `createFileShare()` but with type "edit".
+- [✓] 2026-02-17 06:53 - Register the `edit` subcommand in `src/cli.ts`. Pattern: `program.command("edit").description("Share a file with browser editing support").argument("<targetPath>").option("--readonly", "View-only mode").option("--persist", "Persistent share").option("--ttl <ttl>", "Override TTL")`. The action should resolve the path, call `createEditShare()`, print the URL to stdout. Place it near the `share` command registration.
+- [✓] 2026-02-17 06:55 - Fix server bind: in `src/server-entry.ts`, change `server.listen(listenPort)` to `server.listen(listenPort, "127.0.0.1")` so the server binds to loopback only (Tailscale proxies to localhost anyway, and binding to `::` or `0.0.0.0` conflicts with Tailscale's own listeners on some ports).
+- [✓] 2026-02-17 06:57 - Run `npx vitest run` — all tests must pass (189+ including the existing edit tests that currently fail because createEditShare is missing). Run `npx tsc --noEmit` — must be clean. Fix any issues.
+- [✓] 2026-02-17 07:04 - Create `src/doctor.ts` with individual check/repair functions: `checkStalePid(fix)`, `checkPortAvailability(port, fix)`, `checkTailscaleMappings(fix)`, `checkStateFile(fix)`, `checkServerHealth(fix)`, `checkZombieProcesses(fix)`, `checkShareIntegrity(fix)`. Each returns `{ok: boolean, message: string, fixed?: boolean}`. Export a `runDoctor(options: {fix: boolean, verbose: boolean})` function that runs all checks and returns a summary. Also export individual repair functions for inline use: `cleanStalePid()`, `cleanStaleTailscaleMapping(port)`, `findAvailablePort(startPort, maxAttempts)`, `verifyServerStarted(port, timeoutMs)`.
+- [✓] 2026-02-17 07:04 - Wire self-healing into `ensureTailserveServerRunning()` in `src/server-process.ts`: (a) Before `isPortInUse` check, call `cleanStalePid()` to remove dead PID files. (b) After `spawnServer()`, call `verifyServerStarted(port, 3000)` to confirm the server is actually responding. If verification fails, attempt one diagnostic cycle: check for stale tailscale mappings, clean them, retry spawn. (c) Return diagnostic info in the result so callers know if a heal happened.
+- [✓] 2026-02-17 07:08 - Wire self-healing into server entry (`src/server-entry.ts`): (a) In the `onError` handler for EADDRINUSE: before exiting, call `cleanStaleTailscaleMapping(port)`. If it cleaned something, retry `server.listen()` once. (b) If retry also fails, try ports `port+1` through `port+10` using `findAvailablePort()`. Update state with the new port. (c) Bind to `127.0.0.1` instead of default `::` to avoid IPv6 conflicts.
+- [✓] 2026-02-17 07:12 - Wire post-spawn state refresh into share creation functions (`src/shares.ts`): in `createFileShare()`, `createEditShare()`, and `createProxyShare()`, after `ensureTailserveServerRunning()` returns true, call `readState()` again to pick up any port/hostname changes the server wrote during startup. Use the refreshed state for `toShareUrl()`.
+- [✓] 2026-02-17 07:14 - Harden `readState()` in `src/state.ts`: in the catch block, instead of throwing, rename the corrupted file to `state.json.corrupt.TIMESTAMP`, log a warning to stderr, and return `createDefaultState()`. This makes every CLI command resilient to state corruption.
+- [✓] 2026-02-17 07:17 - Register the `doctor` command in `src/cli.ts`: `ts doctor [--fix] [--verbose]`. Calls `runDoctor()` from `src/doctor.ts`. Prints each check result with ✓/✗ prefix. Prints summary at end with count of issues and whether they were fixed. Exit code 0 if all OK or all fixed, exit code 1 if unfixed issues remain.
+- [✓] 2026-02-17 07:20 - Write tests for `src/doctor.ts` check functions: stale PID detection, stale tailscale mapping detection (mock `tailscale serve status` output parsing), state corruption detection, zombie process detection, share integrity (file exists vs deleted).
+- [✓] 2026-02-17 07:28 - Write tests for self-healing in server startup: (a) stale PID file is cleaned and server starts successfully, (b) EADDRINUSE triggers stale mapping cleanup and retry, (c) port fallback finds next available port and updates state, (d) spawn verification detects dead server and retries.
+- [✓] 2026-02-17 07:30 - Write tests for post-spawn state refresh: create a share when server hasn't started yet, verify the returned URL uses the server's actual port (not the default from initial state).
+- [✓] 2026-02-17 07:32 - Run the full test suite (`npx vitest run`) — all existing tests plus new tests must pass. `npx tsc --noEmit` clean. `npm run build` clean. Fix any issues.
+- [✓] 2026-02-17 08:11 - Add `NamedTunnelConfig` interface to `src/state.ts`: `{name: string, uuid: string, hostname: string, credentialsPath: string}`. Add optional `namedTunnel?: NamedTunnelConfig` to `TailserveState`. Add runtime PID tracking field `namedTunnelPid?: number` (not persisted — written at runtime, cleared on server stop). Update `readState()` to handle backward compatibility (field absent = not configured).
+- [✓] 2026-02-17 08:16 - Add named tunnel lifecycle functions to `src/tunnel.ts`: (a) `checkCloudflaredInstalled()` — runs `which cloudflared`, returns path or null. (b) `checkCloudflaredAuth()` — checks `~/.cloudflared/cert.pem` exists. (c) `createNamedTunnel(name)` — runs `cloudflared tunnel create <name>`, parses UUID from stdout/stderr, returns `{name, uuid, credentialsPath}`. (d) `routeTunnelDns(name, hostname)` — runs `cloudflared tunnel route dns <name> <hostname>`. (e) `generateTunnelConfig(state)` — writes `~/.tailserve/cloudflared-config.yml` with ingress: hostname → `http://127.0.0.1:<port>`, catch-all → `http_status:404`. (f) `startNamedTunnel(state)` — spawns `cloudflared tunnel --config <path> run <name>` detached, returns PID. (g) `stopNamedTunnel(pid)` — sends SIGTERM, waits up to 5s. (h) `removeNamedTunnel(state)` — stops process, runs `cloudflared tunnel delete <name>`, clears state. (i) `isNamedTunnelRunning(pid)` — checks if PID is alive. All functions must handle missing cloudflared gracefully with clear error messages.
+- [✓] 2026-02-17 08:21 - Register `ts tunnel setup <hostname>` in `src/cli.ts`. Options: `--name <name>` (default "tailserve"). Flow: check cloudflared → check auth (tell user to run `cloudflared tunnel login` if missing) → create tunnel → route DNS → generate config → save to state → start tunnel → print `✓ Named tunnel ready at https://<hostname>`. If tunnel already configured, print current config and ask user to run `ts tunnel remove` first.
+- [✓] 2026-02-17 08:27 - Register `ts tunnel status` — shows named tunnel config (name, hostname, UUID) and whether cloudflared process is running. Register `ts tunnel stop` — stops cloudflared process. Register `ts tunnel start` — starts if configured but not running. Register `ts tunnel remove` — full teardown (stop + delete tunnel + clear state).
+- [✓] 2026-02-17 08:33 - Modify `--public` flag on `ts share`, `ts edit`, `ts proxy` in `src/cli.ts`: if named tunnel is configured, the share URL includes the public hostname (`https://<hostname>/s/<id>`). If not configured, print error with setup instructions. The share itself is created normally in state with its TTL/persist settings — expiry works identically to tailnet shares. The `--tunnel` flag continues to create quick tunnels as before (unchanged). Both `--public` and `--tunnel` can coexist on different shares.
+- [✓] 2026-02-17 08:37 - Auto-start named tunnel on server startup in `src/server-entry.ts`: after server starts listening, if `state.namedTunnel` is configured and no cloudflared process is running for it, call `startNamedTunnel()`. On server shutdown, call `stopNamedTunnel()`. Regenerate the cloudflared config on startup in case port changed (self-healing).
+- [✓] 2026-02-17 08:39 - Write tests for named tunnel setup flow: mock cloudflared commands, verify state updated with tunnel config, verify config file generated correctly, verify DNS route called, verify error messages for missing cloudflared / missing auth / already configured.
+- [✓] 2026-02-17 08:43 - Write tests for named tunnel lifecycle: start spawns process and tracks PID, stop kills process, auto-start on server startup, auto-stop on server shutdown, status reports correctly.
+- [✓] 2026-02-17 08:49 - Write tests for `--public` flag: with named tunnel configured returns `https://hostname/s/id` URL, without named tunnel returns helpful error, TTL and persist work on public shares (share removed from state after expiry, tunnel stays running), `--tunnel` still creates quick tunnels independently.
+- [✓] 2026-02-17 08:51 - Write `README.md`: (a) One-liner: "Share files, directories, code editors, and local servers over Tailscale HTTPS — with optional Cloudflare tunnels for public access." (b) Install: `npm install -g tailserve`, prerequisites (Tailscale required, cloudflared optional). (c) Quick start: `ts share file.txt`, `ts edit notes.md`, `ts proxy 3000` — 3 examples with expected output. (d) Access levels section: tailnet-only (default), quick tunnel (`--tunnel`), named tunnel (`--public`) with comparison table. (e) Full command reference: share, edit, proxy, project, list, stop, tunnel (setup/status/start/stop/remove), doctor, server, cleanup. Each with usage + flags + examples. (f) Named tunnel setup guide: step by step with `ts tunnel setup`. (g) Configuration: env vars, state file location, port config. (h) Self-healing section: what it auto-fixes and when to run `ts doctor`. (i) Contributing + License (MIT).
+- [✓] 2026-02-17 08:52 - Create `LICENSE` file — MIT, copyright 2026.
+- [✓] 2026-02-17 08:54 - Update `package.json`: set `"repository": {"type": "git", "url": "https://github.com/AvaProtocol/tailserve"}`, `"homepage"`, `"bugs"`, `"keywords": ["tailscale", "share", "tunnel", "cloudflare", "cli", "serve", "editor", "codemirror", "preview"]`, `"engines": {"node": ">=18"}`, `"files": ["dist", "bin", "LICENSE", "README.md"]`. The `"files"` field ensures `npm pack` is clean — no src, tests, PRDs, or config files.
+- [✓] 2026-02-17 08:59 - Create `.github/workflows/ci.yml`: trigger on push to main + PRs. Node matrix: 18, 20, 22. Steps: checkout, setup-node, `npm ci`, `npm run build`, `npm run lint`, `npm test`. Use `npx vitest run --reporter=verbose` for clear CI output.
+- [✓] 2026-02-17 09:06 - Run `npm pack --dry-run` and verify only dist/, bin/, LICENSE, README.md are included. Run full test suite — all tests pass. Typecheck clean. Build clean. Fix any issues.
+- [✓] 2026-02-17 17:27 - **1. Verify the existing changes compile and pass tests.** Run `npx tsc --noEmit` and `npm test`. If there are failures, fix them. The changes are in `src/tunnel.ts` (new `installCloudflared` and `loginCloudflared` exports), `src/cli.ts` (imports + setup action logic), and `test/share.test.ts` (two updated test cases: "auto-attempts cloudflare login when auth is missing" and "auto-attempts brew install when cloudflared is unavailable").
+- [✓] 2026-02-17 17:30 - **2. Handle the `cloudflared tunnel login` browser flow correctly.** `loginCloudflared()` currently uses `stdio: ["inherit", "pipe", "pipe"]`. The login command prints a URL and waits for the user to visit it in a browser, then Cloudflare writes `cert.pem`. Make sure this works as a blocking synchronous call — the user runs `ts tunnel setup`, sees the URL, clicks it, and setup continues after auth completes. If `inherit` on stdin is needed, adjust. Test manually if possible by inspecting the flow.
+- [✓] 2026-02-17 17:34 - **3. Add a progress UX to stderr during setup.** The CLI should print clear step-by-step progress to stderr during the auto-setup flow: `Installing cloudflared...` → `✓ cloudflared installed` → `Opening browser for Cloudflare login...` → `✓ Cloudflare authenticated` → (existing tunnel creation messages) → `✓ Named tunnel ready at https://hostname`. This is already partially wired — verify the full flow reads well.
+- [✓] 2026-02-17 17:37 - **4. Ensure all 256+ tests pass.** No regressions. The two changed tests should validate the auto-install and auto-login attempt behavior. Run full suite: `npm test`.
+- [✓] 2026-02-17 17:39 - **5. Build and link.** Run `npm run build` (or equivalent) and `npm link` so `ts` CLI is updated globally.

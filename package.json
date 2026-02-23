@@ -1,0 +1,53 @@
+{
+  "name": "tailserve",
+  "version": "1.0.0",
+  "description": "CLI wrapper for tailscale serve",
+  "type": "module",
+  "bin": {
+    "ts": "./bin/ts",
+    "tailserve": "./bin/ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "npm run typecheck"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bkochavy/openclaw-tailserve.git"
+  },
+  "homepage": "https://github.com/bkochavy/openclaw-tailserve",
+  "bugs": {
+    "url": "https://github.com/bkochavy/openclaw-tailserve/issues"
+  },
+  "keywords": [
+    "tailscale",
+    "openclaw",
+    "ai-agent",
+    "file-sharing",
+    "cli"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "LICENSE",
+    "README.md"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^14.0.3",
+    "http-proxy": "^1.18.1",
+    "mime-types": "^3.0.2",
+    "nanoid": "^5.1.6"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  }
+}

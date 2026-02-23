@@ -1,0 +1,117 @@
+tasks:
+  - title: Route Protection — parse TAILSERVE_PROTECTED_PORTS env var
+      (comma-separated port numbers), add protectedPorts:number[] to
+      TailserveState in src/state.ts (default [18789]), update
+      cleanupStaleTailscaleServeRoutes in src/tailscale.ts to skip routes whose
+      backend port is protected or on HTTPS 443. Add
+      test/protected-ports.test.ts. npm test && npm run typecheck.
+    completed: true
+  - title: "Fallback binary name — update package.json bin to {ts: ./bin/ts,
+      tailserve: ./bin/ts}. npm run typecheck."
+    completed: true
+  - title: Remove broken edit command — delete src/md-editor.ts and
+      test/md-editor.test.ts. Remove edit command from src/cli.ts, remove
+      createEditShare from src/shares.ts, remove toEditShareUrl from
+      src/state.ts, remove edit from ShareType union (becomes file|dir|proxy),
+      remove
+      isEditShare/findEditShareByIdOrPath/saveEditShareContent/handleFileApiRequest
+      from src/server.ts. Update affected tests. npm test && npm run typecheck.
+    completed: true
+  - title: Funnel support in tailscale.ts — add runFunnelInBackground and
+      runFunnelOff to TailscaleRuntime interface following same pattern as serve
+      methods but using tailscale funnel. Add enableTailscaleFunnelRoute
+      function. Dry-run safe. Add test/funnel.test.ts. npm test && npm run
+      typecheck.
+    completed: true
+  - title: Public flag on state — add optional public:boolean to ShareRecord and
+      project records in src/state.ts. npm run typecheck.
+    completed: true
+  - title: CLI ts funnel command — add funnel command to src/cli.ts taking port
+      argument, calls ensureTailserveServerRunning then
+      enableTailscaleFunnelRoute, creates proxy share with public:true, prints
+      URL. Support --name for named project. Add tests. npm test && npm run
+      typecheck.
+    completed: true
+  - title: CLI --public flag on share and proxy — add --public option to share and
+      proxy commands in src/cli.ts. When set, use enableTailscaleFunnelRoute
+      instead of ensureTailscaleServeForFirstShare, set public:true on share.
+      Add tests. npm test && npm run typecheck.
+    completed: true
+  - title: Tunnel module — create src/tunnel.ts with TunnelRuntime interface.
+      Implement spawnCloudflaredTunnel(port) that spawns cloudflared tunnel
+      --url as detached child, parses trycloudflare.com URL from output (15s
+      timeout), returns {pid,url}. Implement killTunnelProcess(pid). Throw if
+      cloudflared not found. Add test/tunnel.test.ts with mocked spawn. npm test
+      && npm run typecheck.
+    completed: true
+  - title: Tunnel state — add tunnels:Record<string,{pid,url,port,createdAt}> to
+      TailserveState in src/state.ts. On server close in src/server.ts kill all
+      tunnel processes. npm run typecheck.
+    completed: true
+  - title: CLI ts tunnel command — add tunnel command to src/cli.ts taking port
+      argument, calls spawnCloudflaredTunnel, stores in state.tunnels, prints
+      URL. Support --name. ts stop must check tunnels and kill process. Add ts
+      stop --tunnels to kill all. Add tests. npm test && npm run typecheck.
+    completed: true
+  - title: CLI --tunnel flag on share — add --tunnel option to share command in
+      src/cli.ts. Creates share normally then spawns cloudflared tunnel to
+      TailServe port, stores tunnel, outputs trycloudflare.com URL. Add tests.
+      npm test && npm run typecheck.
+    completed: true
+  - title: Port auto-selection — in src/server-entry.ts wrap server.listen in retry
+      logic. On EADDRINUSE retry port+1 up to port+10, log to stderr, update
+      state.port and state.tsPort. Add test/port-retry.test.ts. npm test && npm
+      run typecheck.
+    completed: true
+  - title: Atomic state writes — in src/state.ts writeState writes to state.json.tmp
+      then renameSync to state.json. Add lockfile mechanism (state.json.lock,
+      10s stale timeout, 5 retries at 100ms). Add concurrent write tests. npm
+      test && npm run typecheck.
+    completed: true
+  - title: CLI ts cleanup command — add cleanup command to src/cli.ts, calls
+      cleanupStaleTailscaleServeRoutes with protected ports. Return summary
+      {removed,protected,skipped}. Print summary. Support --dry-run. Does not
+      require server running. Add tests. npm test && npm run typecheck.
+    completed: true
+  - title: Dashboard updates — update buildDashboardHtml in src/server.ts to show
+      Access column (tailnet/public) based on public field. Show tunnel entries
+      from state.tunnels in Tunnels section. npm test && npm run typecheck.
+    completed: true
+  - title: List command updates — update list command in src/cli.ts to include
+      Access column. Include tunnel entries with type tunnel. Update --json
+      output. Add tests. npm test && npm run typecheck.
+    completed: true
+  - title: Create ultimate-share skill directory — mkdir -p
+      /Users/nova/.openclaw/workspace/skills/ultimate-share/scripts
+      /Users/nova/.openclaw/workspace/skills/ultimate-share/references. Rename
+      /Users/nova/.openclaw/workspace/skills/share to
+      /Users/nova/.openclaw/workspace/skills/share-old.
+    completed: true
+  - title: Write verify-url.sh — create
+      /Users/nova/.openclaw/workspace/skills/ultimate-share/scripts/verify-url.sh.
+      Takes URL as $1, curls with 10s timeout, prints pass/fail with status
+      code, exits 0 on 200/301/302 else 1. chmod +x. Test against
+      https://example.com.
+    completed: true
+  - title: Write cleanup-shares.sh — create
+      /Users/nova/.openclaw/workspace/skills/ultimate-share/scripts/cleanup-shares.sh.
+      Lists TailServe shares (node bin/ts list --json), tunnel tmux sessions
+      (grep share-), tailscale routes. Prints summary. --kill-expired flag runs
+      ts stop --all. chmod +x.
+    completed: true
+  - title: "Write troubleshooting.md — create
+      /Users/nova/.openclaw/workspace/skills/ultimate-share/references/troubles\
+      hooting.md under 150 lines covering: TIME_WAIT ports, tailscale serve
+      holds ports, cloudflared not installed, funnel ACL, port auto-retry,
+      protected routes, state corruption."
+    completed: true
+  - title: Write ultimate-share SKILL.md — create
+      /Users/nova/.openclaw/workspace/skills/ultimate-share/SKILL.md.
+      Frontmatter name:ultimate-share with comprehensive description. Body under
+      200 lines with decision tree (tailnet→TailServe, external temp→cloudflare
+      tunnel, external persistent→funnel, small file→telegram attachment),
+      commands for each method using node
+      /Users/nova/.openclaw/workspace/projects/tailserve/bin/ts, non-negotiable
+      rules (verify URL, never share+create same message), reference to
+      troubleshooting.md.
+    completed: true

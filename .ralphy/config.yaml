@@ -1,0 +1,33 @@
+project:
+  name: "tailserve"
+  language: "TypeScript"
+  framework: "Node.js CLI + HTTP server"
+  description: "CLI tool wrapping tailscale serve for file sharing, previews, and editor links over Tailscale HTTPS"
+
+commands:
+  test: "npx vitest run"
+  lint: "npx tsc --noEmit"
+  build: "npx tsc"
+
+rules:
+  - "Read .ralphy/progress.txt FIRST for context from previous iterations"
+  - "After completing your task, APPEND learnings to .ralphy/progress.txt: what you did, gotchas, patterns found"
+  - "Update CLAUDE.md if you discover new project patterns or conventions"
+  - "Run ALL verification commands before marking a task complete. Do NOT mark done if verification fails"
+  - "Make a git commit with a descriptive message after each completed task"
+  - "Use TypeScript strict mode. All code in src/"
+  - "Use vitest for tests. Test files in test/"
+  - "CLI output: ONLY the URL to stdout on success. Errors to stderr. No banners."
+  - "State file at ~/.tailserve/state.json — see Schema section in PRD.md"
+  - "Use commander for CLI, nanoid for share IDs, mime-types for Content-Type"
+
+boundaries:
+  include:
+    - "src/**"
+    - "test/**"
+    - "bin/**"
+    - "package.json"
+    - "tsconfig.json"
+  exclude:
+    - "node_modules/**"
+    - "dist/**"
