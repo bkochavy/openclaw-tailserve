@@ -1,10 +1,27 @@
 # openclaw-tailserve
 
-Your OpenClaw agent needs to share links. TailServe makes that work, every time.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![OpenClaw](https://img.shields.io/badge/OpenClaw-compatible-orange)](https://openclaw.ai)
 
-TailServe is a CLI that wraps `tailscale serve` into a single command: share a file, get an HTTPS URL, verify it works, hand it to someone. It tracks state, cleans up after itself, and runs as a persistent daemon. This repo packages it as an OpenClaw skill so your agents know how to use it without asking you.
+> OpenClaw agents fail when they hand out broken links. TailServe fixes that with one command and a verified HTTPS URL.
 
-## What you get
+TailServe wraps `tailscale serve` so sharing is mechanical: create a share, get an HTTPS URL, verify it works, send it. It tracks state, cleans up stale routes, and runs as a persistent daemon. This repo packages the workflow for both people and OpenClaw agents.
+
+## For Humans
+
+### Install (one command)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/bkochavy/openclaw-tailserve/main/scripts/install.sh | bash
+```
+
+That installer handles CLI install (`tailserve`), preflight checks, skill install, and daemon setup.
+
+### Why this exists
+
+Agents constantly need to share files and local servers. Raw `tailscale serve` is easy to misconfigure and easy to forget to clean up. TailServe gives you a single reliable path with verification and lifecycle management.
+
+### What you get
 
 - **`ts share ./file.html`** — HTTPS URL on your tailnet, stdout, verified
 - **`ts proxy 3000`** — expose a local dev server to your tailnet
@@ -12,7 +29,7 @@ TailServe is a CLI that wraps `tailscale serve` into a single command: share a f
 - **`ts list`**, **`ts stop`**, **`ts doctor`** — manage, clean up, diagnose
 - **Agent skill** — your agent knows exactly when and how to share links
 
-## Prerequisites
+### Prerequisites
 
 1. **Tailscale Standalone** installed and logged in (`tailscale status` shows "connected")
    - **macOS:** Must be the [Standalone variant](https://tailscale.com/kb/1065/macos-variants), NOT the Mac App Store version. The App Store version runs in a sandbox and does not support `tailscale serve`.
@@ -23,25 +40,15 @@ TailServe is a CLI that wraps `tailscale serve` into a single command: share a f
 Optional:
 - **cloudflared** — only needed for `--tunnel` (external sharing via Cloudflare)
 
-## Install
-
-```bash
-# Install the CLI
-npm install -g tailserve
-
-# Install the OpenClaw skill
-curl -fsSL https://raw.githubusercontent.com/AvaProtocol/openclaw-tailserve/main/scripts/install.sh | bash
-```
-
-Or manually:
+### Manual install
 
 ```bash
 npm install -g tailserve
-mkdir -p ~/.openclaw/skills/share
-cp skill/SKILL.md ~/.openclaw/skills/share/SKILL.md
+mkdir -p ~/.openclaw/workspace/skills/tailserve
+cp skill/SKILL.md ~/.openclaw/workspace/skills/tailserve/SKILL.md
 ```
 
-## Quick start
+### Quick start
 
 ```bash
 # Share a file on your tailnet
@@ -66,7 +73,7 @@ ts stop abc123
 ts stop --all
 ```
 
-Every URL is HTTPS. Every URL goes through Tailscale's certificate infrastructure. No self-signed certs, no HTTP.
+Every URL is HTTPS through Tailscale certificate infrastructure. No self-signed certs, no HTTP.
 
 ## How it works
 
@@ -120,9 +127,9 @@ If you have services that TailServe should never touch during cleanup (like an O
 | `TAILSERVE_PORT` | `7899` | Server listen port |
 | `TAILSERVE_HOME` | `~/.tailserve` | State and config directory |
 
-## How agents use it
+## For AI Agents
 
-The installed skill (`~/.openclaw/skills/share/SKILL.md`) teaches your agent the complete sharing workflow:
+The installed skill (`~/.openclaw/workspace/skills/tailserve/SKILL.md`) teaches your agent the complete sharing workflow:
 
 1. **Decision tree** — which sharing method for which situation
 2. **Commands** — exact syntax, what to expect on stdout
@@ -185,7 +192,7 @@ sudo tailscale up --operator=$USER
 This is a known conflict between Tailscale's MagicDNS and `systemd-resolved`. Check with:
 ```bash
 resolvectl status
-# If Tailscale's 100.100.100.100 isn't listed as a DNS server, restart tailscaled
+# If Tailscale's DNS resolver isn't listed, restart tailscaled
 sudo systemctl restart tailscaled
 ```
 
@@ -235,7 +242,8 @@ Be aware of what this tool does and doesn't do:
 
 ## Related
 
-- [tailserve](https://github.com/AvaProtocol/tailserve) — the CLI itself (this repo is the OpenClaw integration layer)
+- [openclaw-tailserve repository](https://github.com/bkochavy/openclaw-tailserve)
+- [install script](https://raw.githubusercontent.com/bkochavy/openclaw-tailserve/main/scripts/install.sh)
 - [Tailscale Serve docs](https://tailscale.com/kb/1312/serve) — what's under the hood
 - [Tailscale Funnel docs](https://tailscale.com/kb/1223/funnel) — public sharing via Tailscale
 

@@ -2,7 +2,7 @@
 name: share
 description: "Share files, directories, or local servers via HTTPS URLs on the tailnet or publicly. Use whenever you need to give anyone a link to something on this machine. MANDATORY for all link sharing — never construct URLs manually or use raw tailscale serve."
 version: 1.0.0
-homepage: https://github.com/AvaProtocol/openclaw-tailserve
+homepage: https://github.com/bkochavy/openclaw-tailserve
 metadata:
   openclaw:
     emoji: "🔗"

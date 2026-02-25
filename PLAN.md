@@ -50,7 +50,7 @@ The CLI (`tailserve`) is already on npm as its own package. The OpenClaw skill i
 
 ### Repo: `openclaw-tailserve`
 
-This is the **OpenClaw integration repo**, not the CLI source repo. The CLI source lives at `AvaProtocol/tailserve`. This repo provides:
+This is the **OpenClaw integration repo**, not the CLI source repo. The CLI source lives at `bkochavy/tailserve`. This repo provides:
 
 ```
 openclaw-tailserve/
